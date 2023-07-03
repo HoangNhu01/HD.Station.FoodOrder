@@ -1,0 +1,85 @@
+﻿@model RegularCustomerIndexViewModel
+
+@{
+    ViewData["Title"] = Localizer["RegularCustomer"];
+}
+<h1>DataView RegularCustomer</h1>
+<style>
+    .k-grid-content td {
+      position:relative;
+    }
+  </style>
+   <div id="grid"></div>
+    <script>
+        require(["jquery",'kendo.grid.min', 'kendo.aspnetmvc.min'], function ($) {
+          dataSource = new kendo.data.DataSource({
+            transport: {
+              read:  {
+                url: '@Url.Action("Read")',
+              },
+              edit: {
+               url: '@Url.Action("Edit")',
+              },
+              destroy: {
+                url: '@Url.Action("Delete")',
+              },
+              create: {
+                url: '@Url.Action("Create")',
+              },
+              parameterMap: function(options, operation) {
+                if (operation !== "read" && options.models) {
+                  return {models: kendo.stringify(options.models)};
+                }
+              }
+            },
+            batch: true,
+            pageSize: 20,
+            schema: {
+              model: {
+                id: "Id",
+                fields: {
+                  CreatedUser: { editable: false, nullable: true },
+                  CreatedDate: { validation: { required: true } },
+                  FullName: { validation: { required: true } },
+                 
+                }
+              }
+            }
+          });
+        
+      $("#grid").kendoGrid({
+        dataSource: dataSource,
+        pageable: true,
+        height: 680,
+        columns: [
+          { selectable: true, width: "50px" },
+          "CreatedUser",
+          "CreatedDate",
+          "FullName",
+         { command:[{name:"destroy", iconClass:"k-icon k-i-trash"}] , title: "&nbsp;", width: 100}],
+        editable: true
+      });
+
+      $("#grid .k-grid-content").on("change", "input.chkbx", function(e) {
+        var grid = $("#grid").data("kendoGrid"),
+            dataItem = grid.dataItem($(e.target).closest("tr"));
+
+        dataItem.set("Discontinued", this.checked);
+      });
+
+      function dirtyField(data, fieldName){
+        var hasClass = $("[data-uid=" + data.uid + "]").find(".k-dirty-cell").length < 1;
+        if(data.dirty && data.dirtyFields[fieldName] && hasClass){
+          return "<span class='k-dirty'></span>"
+        }
+        else{
+          return "";
+        }
+      }
+      })
+    </script>
+@section navigation {
+    <a>
+        @await Html.PartialAsync("_Create", (RegularCustomerEditViewModel) ViewBag.CreateModel)
+    </a>
+}

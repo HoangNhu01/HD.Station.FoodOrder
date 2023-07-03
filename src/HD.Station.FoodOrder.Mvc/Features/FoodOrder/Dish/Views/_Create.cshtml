@@ -1,0 +1,108 @@
+﻿@model DishEditViewModel
+<div class="row">
+    <div class="col-md-5 row-md-9">
+        <button type="button" class="btn btn-primary-outline" data-toggle="modal" data-target="#modalCreate" icon-name="action-create">
+            <i></i> Add Dish
+        </button>
+    </div>
+    @*<div class="col-sm-5 text-right">
+            Ngày: <span id="datetime"> </span>
+            <script>
+                var dt = new Date();
+                document.getElementById("datetime").innerHTML = dt.toLocaleString();
+            </script>
+        </div>*@
+</div>
+<div class="modal fade" id="modalCreate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="create-new">Thêm Menu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="target" name="Create" asp-action="Create" enctype="multipart/form-data">
+            <div class="modal-body">
+                <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                <div class="form-group">
+                                <label for="Name">@Localizer["Name"]:</label>
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                <span class="field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+                                </div>
+
+                                <div class="form-group">
+                                   <label for="Description">@Localizer["Description"]:</label>
+                                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                                    <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
+                                </div>
+
+                                 <div class="form-group">
+                                    <label for="Photo">@Localizer["Photo"]:</label>
+                                    @Html.LabelFor(model => model.Photo)
+                                    @Html.TextBoxFor(model => model.PhotoUpload, new { type = "file", name = "PhotoUpload", id = "PhotoUpload", @class= "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Photo, "", new { @class = "text-danger" })
+                                    @*@Html.TextBoxFor(m => m.Photo, new { @class = "form-control" })k*@
+                                    <span class="field-validation-valid" data-valmsg-for="Photo" data-valmsg-replace="true"></span>
+                                </div>
+
+                                <div class="form-group">
+                                   <label for="CreatedUser">@Localizer["CreatedUser"]:</label>
+                                    @*@Html.DropDownList(m => m.CreatedUser, new { @class = "form-control create-user", @asp-items="ViewBag.UserName" })*@
+                                    <select asp-for="CreatedUser" class ="form-control" asp-items="ViewBag.UserName"></select>
+                                    
+                                    <span class="field-validation-valid" data-valmsg-for="CreatedUser" data-valmsg-replace="true"></span>
+                                </div>
+
+                                 @*<div class="form-group">
+                                    <label for="LastModifiedUser">@Localizer["LastModifiedUser"]:</label>
+                                    @Html.TextBoxFor(m => m.LastModifiedUser, new { @class = "form-control" })
+                                    <span class="field-validation-valid" data-valmsg-for="LastModifiedUser" data-valmsg-replace="true"></span>
+                                </div>*@
+
+                                <div class="form-group">
+                                <label for="Properties">@Localizer["Properties"]:</label>
+                                @Html.TextBoxFor(m => m.Properties, new { @class = "form-control" })
+                                <span class="field-validation-valid" data-valmsg-for="Properties" data-valmsg-replace="true"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="DishCategoryId">@Localizer["DishCategoryName"]:</label>
+                                    @*@Html.DropDownList(m => m.CreatedUser, new { @class = "form-control create-user", @asp-items="ViewBag.UserName" })*@
+                                    <select asp-for="DishCategoryId" class="form-control" asp-items="ViewBag.DishCategoryName"></select>
+
+                                    <span class="field-validation-valid" data-valmsg-for="DishCategoryId" data-valmsg-replace="true"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Price">@Localizer["Price"]:</label>
+                                    @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
+                                    <span class="field-validation-valid" data-valmsg-for="Price" data-valmsg-replace="true"></span>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            </form>
+            <div class="modal-footer" >
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id ="other">
+                    <span class="icon icon-action-save"></span>
+                    [Save changes]
+                </button>
+            </div>
+            <script>
+                require(["jquery",'kendo.grid.min', 'kendo.aspnetmvc.min'], function ($)
+                {
+                $("#other" ).click(function() {
+                $("#target" ).submit();
+
+                });
+                 });
+
+            </script>
+        </div>
+    </div>
+</div>

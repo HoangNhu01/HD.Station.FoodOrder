@@ -1,0 +1,86 @@
+﻿@using HD.Station.FoodOrder
+@model DishViewModel
+@{
+    ViewData["Title"] = Localizer["Dish"];
+    ViewData["SubTitle"] = Localizer["Details"];
+    var message = ViewBag.Notice as NoticeModel;
+}
+
+<div class="hr-divider">
+    <h3 class="hr-divider-content hr-divider-heading">
+        @ViewData["Title"]
+    </h3>
+</div>
+
+<div notice-for="message"></div>
+
+<div class="content col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+    <div class="form-horizontal">
+        <fieldset>
+            <dl class="dl-horizontal">
+                @Html.HiddenFor(m => m.Id)
+
+                @{
+                    foreach (var member in Model.GetType().DisplayProperties())
+                    {
+                        string mname = member.Name;
+
+                        if (member.IsHidden())
+                        {
+                            @Html.Hidden(mname);
+                        }
+                        else
+                        {
+                            <dt>
+                                @Localizer[member.DisplayName()]:
+                            </dt>
+                            <dd>
+                                @{
+                                    var description = member.DisplayDescription();
+                                    if (!string.IsNullOrWhiteSpace(description))
+                                    {
+                                        @*<p>
+                                                @Localizer[description]
+                                            </p>*@
+                                    }
+                                    var value = member.TryGetValue((object)Model);
+                                    if (value != null && typeof(bool).IsAssignableFrom(value.GetType()))
+                                    {
+                                        value = ((bool)value) ? Localizer["Yes"] : Localizer["No"];
+                                    }
+                                }
+                                @value
+                            </dd>
+                        }
+                    }
+                }
+            </dl>
+        </fieldset>
+
+        <hr />
+
+        <div class="form-group">
+            <div class="form-actions col-md-offset-3 col-md-9">
+                <a asp-action="Index" icon-name="action-back" asp-route-id="" class="btn btn-default">
+                    @Localizer["Back"]
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section navigation {
+    <a asp-action="Edit" icon-name="action-edit" asp-route-id="@ViewBag.Id" class="btn btn-primary-outline">
+        @Localizer["Edit"]
+    </a>
+    <a asp-action="Delete" icon-name="action-delete" asp-route-id="@ViewBag.Id" class="btn btn-danger-outline">
+        @Localizer["Delete"]
+    </a>
+    <a asp-action="Create" icon-name="action-create" asp-route-id="" class="btn btn-primary-outline">
+        @Localizer["Create"]
+    </a>
+    <a asp-action="Index" asp-route-id="" icon-name="action-back" class="btn btn-default-outline">
+        @Localizer["Back"]
+    </a>
+}

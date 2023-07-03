@@ -1,0 +1,48 @@
+﻿@model DishCategoryViewModel
+@{
+    ViewData["Title"] = Localizer["Delete result"];
+    ViewData["SubTitle"] = Localizer["Delete"];
+    var message = ViewBag.Notice as NoticeModel;
+}
+
+<div class="hr-divider">
+    <h3 class="hr-divider-content hr-divider-heading">
+        @ViewData["Title"]
+    </h3>
+</div>
+
+<div notice-for="message"></div>
+@if (Layout != "_ModalLayout")
+{
+    <div class="content col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+        <div class="form-horizontal">
+
+            <hr />
+            <div class="form-group">
+                <div class="form-actions col-md-offset-3 col-md-9">
+                    <a asp-action="Index" icon-name="action-back" asp-route-id="" class="btn btn-default">
+                        @Localizer["Back"]
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    @section navigation {
+        <a asp-action="Create" icon-name="action-create" class="btn btn-primary-outline">
+            @Localizer[$"Create {Model?.GetType()?.DisplayName()}"]
+        </a>
+    }
+}
+else
+{
+    // For modal
+    @section actions{
+        <div class="modal-actions col-md-offset-3 col-md-9">
+            <button icon-name="action-cancel" name="close" class="btn btn-default" data-dismiss="modal">
+                @Localizer["Close"]
+            </button>
+        </div>
+    }
+
+}

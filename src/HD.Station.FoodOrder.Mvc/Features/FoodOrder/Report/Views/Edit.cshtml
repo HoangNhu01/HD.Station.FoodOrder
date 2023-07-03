@@ -1,0 +1,86 @@
+﻿@model ReportEditViewModel
+@{
+    ViewData["Title"] = Localizer["Report"];
+    ViewData["SubTitle"] = Localizer["Edit"];
+    var message = ViewBag.Notice as NoticeModel;
+    var path = ViewData["path"] != null ? ViewData["path"] : "";
+    var labelClass = ViewData["labelClass"] != null ? ViewData["labelClass"] : "col-md-3";
+    var fieldClass = ViewData["fieldClass"] != null ? ViewData["fieldClass"] : "col-md-8";
+    var groupClass = ViewData["groupClass"] != null ? ViewData["groupClass"] : "form-group";
+}
+
+<div class="hr-divider">
+    <h3 class="hr-divider-content hr-divider-heading">
+        @ViewData["Title"]
+    </h3>
+</div>
+
+<div notice-for="message"></div>
+
+<div class="content col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+
+    <form name="Edit" asp-route-id="@ViewBag.Id" asp-action="Edit" class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <fieldset>
+            @{
+                var mode = ViewData["__mode"] != null ? (FormMode)ViewData["__mode"] : FormMode.Edit;
+                foreach (var member in Model.GetType().DisplayProperties())
+                {
+                    string mname = member.Name;
+                    var tag = member.GetInputType();
+                    if (member.IsHidden())
+                    {
+                        @Html.Hidden(mname);
+                    }
+                    else
+                    {
+                        <div class="@groupClass">
+                            <div class="@labelClass">
+                                <label class="control-label" m-for="@mname" m-parent="@path"></label>
+                            </div>
+                            <div class="@fieldClass">
+                                @{
+                                    if (tag == FormInputType.Multiselect)
+                                    {
+                                        <select m-for="@mname" m-parent="@path" m-items="@FormHelper.GetSelectList(Model, member)" m-multiple="true" m-mode="@mode"></select>
+                                    }
+                                    else if (tag == FormInputType.Textarea)
+                                    {
+                                        var value = member.TryGetValue((object)Model);
+                                        <textarea m-for="@mname" m-parent="@path" m-mode="@mode">@value</textarea>
+                                    }
+                                    else
+                                    {
+                                        <input m-for="@mname" m-parent="@path" m-datalist="@FormHelper.GetInputDatalist(Model, member)" m-mode="@mode" />
+                                    }
+                                }
+                                <span m-validation-for="@mname" m-parent="@path" class="text-danger"></span>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </fieldset>
+
+        <hr />
+        <div class="form-group">
+            <div class="form-actions col-md-offset-3 col-md-9">
+
+                <a asp-action="Index" icon-name="action-back" asp-route-id="" class="btn btn-default">
+                    @Localizer["Back"]
+                </a>
+                <button type="submit" icon-name="action-save" class="btn btn-primary">
+                    @Localizer["Save changes"]
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+@section navigation {
+    <a asp-action="Index" asp-route-id="" icon-name="action-back" class="btn btn-default-outline">
+        @Localizer["Back"]
+    </a>
+}

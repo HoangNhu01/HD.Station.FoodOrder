@@ -1,0 +1,168 @@
+﻿@model IEnumerable<MenuInfoViewModel>
+@{
+    Layout = "_ViewHeader";
+}
+
+
+        <div class="container-fluid">
+            <div class="row content">
+                <div class="col-sm-3 sidenav" id="leftmain">
+                    <div class=""></div>
+                    <h4>Danh mục sản phẩm</h4>
+                    <div class="kengang"></div>
+                    <ul class="nav nav-pills nav-stacked">
+
+                        <li class="danhmuc-sp dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown"  >
+                                <img src="~/image/icon.png" alt="Lights" style="width:11%"> Đồ ăn theo ngày <span class="caret"> </span>
+
+                            </a>
+
+
+
+                    <ul class="dropdown-menu" style="width:200px;">
+                        @{var sectionIndex = 1;}
+                        @foreach (var item in Model)
+                        {
+                            
+                            <li>
+                               @* <a href="foodorder/customerorder/menuindex/@item.Id">*@
+                                <a href="#section@(sectionIndex)" style="font-size:large;">
+                                    @item.Description
+                                </a>
+                            </li>
+                            sectionIndex++;
+                        }
+                            </ul>
+                        </lsi>
+                        <li class="danhmuc-sp">
+                            <a asp-action="Index">
+                                <img src="~/image/icon.png" alt="Lights" style="width:11%">
+                                Đặt món ăn kèm
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-9">
+            @{ sectionIndex = 1;}
+                    @foreach(var item in Model)
+                    {
+                         var id = item.Id;
+                         <h1>
+                             @item.Description
+                         </h1>
+                <div id="section@(sectionIndex)" class="kengang2"></div>
+                 sectionIndex++;
+                <div class="row list-dish">
+                        <div id="" class="">
+                            @{
+                                int count = item.MealMenus.Count() / 4;
+                                int store = 0;
+                                if (item.MealMenus.Count() % 4 != 0)
+                                {
+                                    count += 1;
+                                }
+                               
+                                <div class="" >
+                                    @for (int i = 0; i < count; i++)
+                                    {
+                                        <div class="item @(i==0?"active":"")">
+                                            @{
+                                                var x = item.MealMenus.Skip(i * 4).Take(4);
+                                                <div class="row" id="wrap-@item.Description-@i">
+                                                   @{
+                                                        @foreach (var index in x)
+                                                        {
+                                                            <div class="col-sm-6 col-md-3 col-lg-3">
+                                                                <div class="food-card">
+                                                                <a asp-action="AddOrderForMenu" asp-route-id="@index.MenuId">
+            
+                                                                            <div class="food-card_img">
+                                                                        <img class="image" src="data:image/png;base64, @(Convert.ToBase64String(index.Dish.Photo))" alt="">
+                                                                                <a href="#!"><i class="far fa-heart"></i></a>
+                                                                            </div>
+                                                                            <div class="food-card_content">
+                                                                                <div class="food-card_title-section">
+                                                                                <a href="#!" class="food-card_title">@index.Dish.Name</a>
+                                                                                    <!-- <a href="#!" class="food-card_author">Burger</a> -->
+                                                                                </div>
+                                                                                <div class="food-card_bottom-section">
+                                                                                    <div class="space-between">
+                                                                                    </div>
+                                                                                    <hr>
+                                                                                    <div class="space-between">
+                                                                                        <div class="food-card_price">
+                                                                                        <span>@(index.Dish.Price) &nbsp;<span>₫</span> &nbsp;<span>@index.Dish.Properties</span></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                    }
+                                                }
+                                             </div>
+
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            
+                          
+                        </div>
+                        
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+   
+
+
+   
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        //$(document).ready(function () {
+        //    interactData()
+        //});
+        //let interactData = () => {
+        //    console.log(123)
+        //    $.ajax({
+        //        url: "/foodorder/customerorder/read",
+        //        dataType: `json`,
+        //        type: `get`,
+        //        data: {
+        //            "includeDisabled": false,
+        //            "filterText": null
+        //        },
+        //        success: (data) => {
+        //            console.log(data)
+        //            let dishes = data.ListDish;
+        //            let store = 1;
+        //            for (let dish of dishes) {
+        //                dish.ListDish.forEach((e, index) => {
+        //                    //let html = ${
+        //                    //     `<div class="col-sm-3">
+        //                    //          <div class="thumbnail">
+        //                    //              <a href="" target="_blank">
+        //                    //                  <img  src="data:image/jpg;base64,${dishItem.Photo}" alt="Lights" style="width:100%>
+        //                    //                 <div class="caption" id="nensanpham">
+        //                    //                     <p>${dishItem.Name}</p>
+        //                    //                     <span>${dishItem.Price};<span>₫</span><span>(${dishItem.Properties})</span></span>
+        //                    //                 </div>
+        //                    //              </a>
+        //                    //          </div></div>`};
+        //                })
+        //            }
+        //        }
+        //    })
+        //}
+       
+
+
+
+    </script>
+

@@ -1,0 +1,180 @@
+﻿@model OrderIndexViewModel
+
+@{
+    ViewData["Title"] = Localizer["ORder"];
+}
+<h1>DataView Order</h1>
+<p>Số lượng ORDER: @ViewBag.CountItems</p>
+
+<div class="flextable table-actions ">
+    <div class="flextable-item flextable-primary">
+        <div class="btn-toolbar-item input-with-icon" style="width: 70%; max-width: 600px;">
+            <span class="icon icon-search"></span>
+            <input type="search" id="filterText" class="form-control input-block " value="@Model.Filter" placeholder="@Localizer["Search..."]">
+        </div>
+        <div class="btn-toolbar-item input-with-icon">
+            <button id="clearFilter" class="btn btn-primary-outline" icon-name="erase"></button>
+        </div>
+    </div>
+</div>
+<div id="quotaModal" class="modal fade" tabindex="-1" role="dialog">
+</div>
+@{
+    var properties = typeof(OrderViewModel).GetProperties().OrderBy(p => p.GetCustomAttribute<GridDisplayAttribute>()?.Order ?? 999);
+    List<object> mockList = new List<object> { };
+    var groupable = false;
+    var groups = new List<object>();
+}
+@(Html.Kendo()
+.Grid(mockList)
+.Name("grid")
+.Columns(columns =>
+{
+    foreach (var property in properties)
+    {
+        if (property.HasCustomAttribute<GridDisplayAttribute>(false))
+        {
+            var attr = property.GetCustomAttribute<GridDisplayAttribute>();
+            var name = attr.Name ?? property.Name;
+            var bound = columns.Bound(name)
+                                .Sortable(attr.Sortable)
+                                .Filterable(attr.Filterable)
+                                .Title(Localizer[attr.Title ?? property.Name].Value)
+                                .Width(attr.Width)
+                                .Groupable(attr.Groupable);
+            
+
+            if (attr.Groupable) { groupable = true; groups.Add(new { field = name }); }
+
+            if (!string.IsNullOrWhiteSpace(attr.Template))
+
+            {
+                bound.ClientTemplate(attr.Template);
+            }
+            else
+            if (typeof(bool).IsAssignableFrom(property.PropertyType))
+            {
+                bound
+                .ClientTemplate($"<input type='checkbox' #={property.Name} ? 'checked=checked' : '' # disabled='disabled' />");
+            }
+            var attrs = property.HtmlAttrs<GridDisplayAttribute>();
+
+            if (attrs != null)
+            {
+                var a = new ExpandoObject();
+                foreach (var kvp in attrs)
+                {
+                    ((ICollection<KeyValuePair<string, object>>)a)
+                    .Add(new KeyValuePair<string, object>(kvp.Key, kvp.Value));
+                }
+                dynamic attrsObj = a;
+                bound.HeaderHtmlAttributes(attrsObj)
+                        .HtmlAttributes(attrsObj)
+                ;
+            }
+        }
+        else
+        {
+            columns.Bound(property.Name).Hidden();
+        }
+    }
+    var baseUrl = Url.Action("Index");
+
+    var quotaMUrl = Url.Action("QuotaManager");
+    var quotaBtn = string.Format("<button id='btnQuotaManager' onClick=" + "LoadQuota('#: Id #')" + " class='btn btn-sm btn-success-outline'><span class='icon icon-tools'></span>{1}</button>",
+    quotaMUrl, Localizer["Quota Manager"].Value);
+
+    var details = string.Format("<a class='btn btn-sm btn-info-outline' href='{0}/#: Id #'><span class='icon icon-action-detail'></span>{1}</a>",
+    baseUrl, Localizer["Details"].Value);
+
+    var edit = string.Format("<a class='btn btn-sm btn-primary-outline' href='{0}/#: Id #/Edit'><span class='icon icon-action-edit'></span>{1}</a>",
+    baseUrl, Localizer["Edit"].Value);
+
+    var delete = string.Format("<a class='btn btn-sm btn-danger-outline' href='{0}/#: Id #/Delete'><span class='icon icon-action-delete'></span>{1}</a>",
+    baseUrl, Localizer["Delete"].Value);
+
+    columns
+    .Template("<div class='btn-group'>" + edit + details + delete + "</div>")
+    .HtmlAttributes(new { @class = "action-col" })
+    .Width(350)
+    .Title(" ");
+})
+.HtmlAttributes(new { @class = "k-grid-dynamic" })
+.Scrollable(scroll => scroll.Enabled(true))
+.Pageable(pageable => pageable
+    .Refresh(true)
+    .PageSizes(new int[] { 20, 50, 100, 150 })
+    .ButtonCount(5)
+)
+.Filterable()
+.Sortable()
+.Groupable(groupable)
+.Resizable(config => { config.Columns(true); })
+.DataSource(dataSource => dataSource
+    .Ajax()
+    .Batch(true)
+    .PageSize(20)
+    .AutoSync(true)
+    .Read(read => read.Action("Read", nameof(Order)))
+)
+.Deferred()
+)
+
+<style>
+
+    /* Medium Devices, Desktops */
+    @@media only screen and (min-width : 992px) {
+        #grid {
+            height: calc(100% - 100px) !important;
+        }
+    }
+</style>
+<script>
+require(["jquery",'kendo.grid.min', 'kendo.aspnetmvc.min'], function ($) {
+    // put deferred grid javascript inside require
+    @Html.Kendo().DeferredScriptsFor("grid", false);
+
+    var getData = function () {
+        return {
+            filterText: $("#filterText").val()
+        }
+    }
+
+    var refreshData = function () {
+        var grid = $("#grid").data("kendoGrid");
+        grid.dataSource.transport.options.read.data = getData;
+        $("#grid").data("kendoGrid").dataSource.read();
+        $("#grid").data("kendoGrid").refresh();
+    }
+
+    $("#filterDisabled").change(refreshData);
+    $("#filterText").keypress(function (e) {
+        var keyCode = e.keyCode ? e.keyCode : e.which;
+        if (keyCode == 13 || keyCode == 10) {
+            refreshData();
+        }
+    });
+
+    $("#clearFilter").click(function () {
+        $("#filterText").val("");
+        refreshData();
+    });
+
+    $(document).ready(function () {
+
+    });
+
+})
+</script>
+<script>
+    function LoadQuota(idStorage) {
+        console.log("Load Modal " + idStorage);
+        $("#quotaModal").load('mediaassets/storagelocation/quotaManager?id=' + idStorage);
+        $("#quotaModal").modal("show");
+    }
+</script>
+@section navigation {
+    <a>
+          @await Html.PartialAsync("_Create",(OrderEditViewModel) ViewBag.CreateModel)
+    </a>
+}

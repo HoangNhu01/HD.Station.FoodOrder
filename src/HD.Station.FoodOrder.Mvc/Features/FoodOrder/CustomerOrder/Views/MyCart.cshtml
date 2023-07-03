@@ -1,0 +1,214 @@
+﻿@model IEnumerable<CustomerOrderViewDishOrder>
+@using Newtonsoft.Json
+
+
+@{
+    Layout = "_ViewHeader";
+}
+
+
+<div class="container-fluid" style="box-sizing: border-box;">
+
+    <div class="row content">
+        <div class="col-sm-9" style="background-color:whitesmoke; width: 100%;height: 30%;margin-top: 5%;">
+            <div class="row">
+                <div class="col-xs-8 col-sm-6 main-Giohang" style="margin-top: 2%;margin-bottom: 2%;">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th colspan="3">
+                                    SẢN PHẨM
+                                </th>
+                                <th>
+                                    GIÁ
+                                </th>
+                                <th>
+                                    SỐ LƯỢNG
+                                </th>
+                                <th>
+                                    TỔNG
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @{
+                                var index = 1;
+                                //var listIds = new List<Guid>();
+
+                            }
+                            @foreach (var item in Model)
+                            {
+                                @* if(item.MenuId != null)
+                            {
+                            menuId = item.MenuId;
+                            }
+                            listIds.Add(item.Id);*@
+                                <tr class="item_row product">
+                                    <td class="product-remove " style="vertical-align: inherit;">
+                                        <!-- <a style="text-decoration: none;" class="remove" aria-label="Xóa sản phẩm này">×</a> -->
+                                        @* <button type="button" class="btn btn-default">
+                                    <a asp-action="DeleteOrderDeTail" asp-route-id="@item.Id" asp-route-menuId="@item.MenuId">Xóa</a>
+                                    </button>*@
+                                        <button type="button" class="btn btn-default" style="margin-right:20px">
+                                            <a asp-action="DeleteOrderDeTail" asp-route-id="@item.Id" @(item.MenuId != null ? 'asp-route-menuId="@item.MenuId"' : "")>
+                                                <span class="fa-solid fa-trash span-icon"></span>
+                                            </a>
+                                        </button>
+                                    </td>
+
+                                    <td class="product-thumbnail">
+                                        <a href=""><img width="80" height="80" src="data:image/png;base64, @(Convert.ToBase64String(item.Dish.Photo))"></a>
+                                    </td>
+
+                                    <td class="product-info" style="vertical-align: inherit;" data-title="Sản phẩm">
+                                        <a style="text-decoration: none;" href="">@item.Dish.Name</a>
+                                    </td>
+
+                                    <td class="product-price" style="vertical-align: inherit;" data-title="Giá">
+                                        <span class="price">@item.Dish.Price</span><span>&nbsp;₫</span><span></span>
+                                    </td>
+
+                                    <td class="product-quantity" data-title="Số lượng" style="vertical-align: inherit;">
+                                        <div class="quantity buttons_added">
+                                            <label class="screen-reader-text" for="quantity_pro"></label>
+                                            <input type="number" id="quantity_pro@(index)" class="input-text qty text" step="1" min="0" max="9999" name="cart[8597a6cfa74defcbde3047c891d78f90][qty]" value="@item.Quantity" title="SL" size="4" pattern="[0-9]*" inputmode="numeric" disabled>
+                                    </td>
+
+                                    <td id="tong-gia-monan" class="product-subtotal" data-title="Tổng" style="vertical-align: inherit;">
+                                        <span id="count-price-product@(index)"></span><span>&nbsp;₫</span><span></span>
+                                    </td>
+
+                                </tr>
+                                index++;
+                            }
+                            @{
+                                string json = JsonConvert.SerializeObject(Model);
+                                //bool hasValueOne = Model.Any(obj => obj.MenuId != null);
+                            }
+
+
+                            <tr>
+                                <td colspan="6" class="actions clear" style="border-bottom: 0px;text-decoration: none;">
+
+                                    <div class="continue-shopping pull-left text-left">
+                                        <a class="button-continue-shopping button primary is-outline" href="~/FoodOrder/CustomerOrder/Index">
+                                            ← Tiếp tục xem sản phẩm
+                                        </a>
+                                    </div>
+
+                                    <input type="submit" id="cap-nhat" class="button primary mt-0 pull-left small" name="update_cart" value="Cập nhật giỏ hàng" onclick="myCartFunction()">
+                                    <input type="hidden" id="_wpnonce" name="_wpnonce" value="a34032a7a0"><input type="hidden" name="_wp_http_referer" value="/gio-hang/">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+                <div class="col-xs-4 col-sm-6 main-Giohang" style="margin-top: 2%;margin-bottom: 2%;">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th colspan="2" style="text-align: left;">
+                                    TỔNG GIỎ HÀNG
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="sum-cart">
+                                <td style="text-align: left;">
+                                    Tạm tính:
+                                </td>
+                                <td class="product-price" style="vertical-align: left;" data-title="Tạm tính">
+
+                                    <span class="total-All1"></span><span>&nbsp;₫</span><span></span>
+
+                                </td>
+                            </tr>
+                            <tr class="sum-cart">
+                                <td style="text-align: left;">
+                                    Tổng tiền:
+                                </td>
+                                <td class="product-price" style="vertical-align: left;" data-title="Tổng tiền">
+
+                                    <span class="total-All2"></span><span>&nbsp;₫</span><span></span>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <button type="button" class="btn btn-warning" style="font-size: larger;width: 500px;">
+                        <a href="#" class="thanh-toan"> TIẾN HÀNH THANH TOÁN </a>
+                    </button>
+
+                    <form>
+                        <div class="form-group" style="margin-top: 2%;">
+                            <label for="Phieugiamgia">Phiếu giảm giá:</label>
+                            <input type="email" class="form-control" id="Phieugiamgia" placeholder="Nhập phiếu ưu đãi">
+                        </div>
+                        <button type="submit" class="btn btn-default" style="width:100px;height: 39px;margin-bottom: 1%;margin-left: 0%;">Áp dụng</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+    <script>
+        $(`a.thanh-toan`).click(function () {
+            myCartFunction();
+            var myList = JSON.parse('@Html.Raw(json)');
+            console.log(myList)
+            $.ajax({
+                url: "/foodorder/customerorder/CreateOrder",
+                dataType: `json`,
+                type: `post`,
+                data: {
+                    "data": myList,
+                },
+                success: (data) => {
+                    alert(data);
+                    location.reload();
+                }
+            })
+        });
+        function myCartFunction() {
+            let products = document.querySelectorAll(".item_row");
+            let a = 0;
+            products.forEach((e, index) => {
+                let total = 0;
+                let totalprice = 0;
+                let price = e.querySelector(".price").textContent.replace(/\D/g, '');
+                let quantity = e.querySelector(`#quantity_pro${index + 1}`).value;
+                total += Number(price) * Number(quantity);
+                a += total;
+
+                let numString = total.toLocaleString('en-US', { minimumFractionDigits: 0 })
+                e.querySelector(`#count-price-product${index + 1}`).textContent = numString;
+
+                // toltalprice = totalprice + count
+                // console.log(numString);
+                // a += (numString);
+
+
+            })
+
+
+
+            let x = a.toLocaleString('en-US', { minimumFractionDigits: 0 });
+            document.getElementsByClassName("total-All1")[0].innerHTML = x;
+            document.getElementsByClassName("total-All2")[0].innerHTML = x;
+
+
+        }
+
+
+    </script>

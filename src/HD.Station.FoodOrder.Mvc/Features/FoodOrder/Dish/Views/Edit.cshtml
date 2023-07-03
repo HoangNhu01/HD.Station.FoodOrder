@@ -1,0 +1,126 @@
+﻿@model DishEditViewModel
+@{
+    ViewData["Title"] = Localizer["Customer"];
+    ViewData["SubTitle"] = Localizer["Edit"];
+    var message = ViewBag.Notice as NoticeModel;
+    //var path = ViewData["path"] != null ? ViewData["path"] : "";
+    //var labelClass = ViewData["labelClass"] != null ? ViewData["labelClass"] : "col-md-3";
+    //var fieldClass = ViewData["fieldClass"] != null ? ViewData["fieldClass"] : "col-md-8";
+    //var groupClass = ViewData["groupClass"] != null ? ViewData["groupClass"] : "form-group";
+}
+
+<div class="hr-divider">
+    <h3 class="hr-divider-content hr-divider-heading">
+        @ViewData["Title"]
+    </h3>
+</div>
+
+<div notice-for="message"></div>
+
+<div class="content col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+
+    <form name="Edit" asp-route-id="@ViewBag.Id" asp-action="Edit" class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @*<fieldset name="@path" >*@
+            @*<div class="form-group">
+                *@
+                <input hidden name="id" />
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="Name">@Localizer["Name"]:</label>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="Description">@Localizer["Description"]:</label>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="Photo">@Localizer["Photo"]:</label>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(m => m.Photo, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="Photo" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="CreatedUser">@Localizer["CreatedUser"]:</label>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(m => m.CreatedUser, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="CreatedUser" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="CreatedDate">@Localizer["CreatedDate"]:</label>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(m => m.CreatedDate, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="CreatedDate" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="LastModifiedUser">@Localizer["LastModifiedUser"]:</label>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(m => m.LastModifiedUser, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="LastModifiedUser" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                     <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="LastModifiedDate">@Localizer["LastModifiedDate"]:</label>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(m => m.Photo, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="LastModifiedDate" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                     <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="Properties">@Localizer["Properties"]:</label>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(m => m.Properties, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="Properties" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+               
+            @*</div>*@
+        @*</fieldset>*@
+
+        <hr />
+        <div class="form-group">
+            <div class="form-actions col-md-offset-3 col-md-9">
+
+                <a asp-action="Index" icon-name="action-back" asp-route-id="" class="btn btn-default">
+                    @Localizer["Back"]
+                </a>
+                <button type="submit" icon-name="action-save" class="btn btn-primary">
+                    @Localizer["Save changes"]
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+@section navigation {
+    <a asp-action="Index" asp-route-id="" icon-name="action-back" class="btn btn-default-outline">
+        @Localizer["Back"]
+    </a>
+}

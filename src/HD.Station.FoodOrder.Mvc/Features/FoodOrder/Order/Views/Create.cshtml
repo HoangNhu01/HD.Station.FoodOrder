@@ -1,0 +1,187 @@
+﻿@model OrderEditViewModel
+@{
+    ViewData["Title"] = Localizer["Order"];
+    ViewData["SubTitle"] = Localizer["Create"];
+    var message = ViewBag.Notice as NoticeModel;
+    var path = ViewData["path"] != null ? ViewData["path"] : "";
+    var name = ViewData["name"] != null ? ViewData["name"] : "";
+    var groupClass = ViewData["groupClass"] != null ? ViewData["groupClass"] : "form-group";
+    var labelClass = ViewData["labelClass"] != null ? ViewData["labelClass"] : "col-md-3";
+    var fieldClass = ViewData["fieldClass"] != null ? ViewData["fieldClass"] : "col-md-8";
+}
+
+<div class="hr-divider">
+    <h3 class="hr-divider-content hr-divider-heading">
+        Danh sách món ăn ngày : @DateTime.Now.ToShortDateString()
+    </h3>
+</div>
+<div notice-for="message"></div>
+<div class="content col-md-10 col-lg-8">
+    <form name="Create" asp-action="Create" class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <fieldset name="@path" data-name="@name">
+           <section id="team" class="pb-5">
+        <div class="container">
+            <div class="col-md-5 no-padding lib-item" data-category="ui">
+                <div class="lib-panel">
+                    <div class="row box-shadow">
+                        <div class="col-md-6">
+                            <img class="lib-img" src="https://vcdn-giadinh.vnecdn.net/2022/03/14/Canh-ca-Quynh-Coi-7867-1628756-5278-8560-1647227927.jpg">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="lib-row lib-header">
+                                Example library
+                                <div class="lib-header-seperator"></div>
+                            </div>
+                            <div class="lib-row lib-desc" style="color:black">
+                                Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 no-padding lib-item" data-category="ui">
+                <div class="lib-panel">
+                    <div class="row box-shadow">
+                        <div class="col-md-6">
+                            <img class="lib-img" src="https://cdn.tgdd.vn/Files/2020/11/30/1310363/tong-hop-cac-mon-an-tu-ca-chep-bo-tui-de-nau-ca-thang-khong-bao-gio-ngan-202201071820154823.jpg">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="lib-row lib-header">
+                                Example library
+                                <div class="lib-header-seperator"></div>
+                            </div>
+                            <div class="lib-row lib-desc">
+                                Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 no-padding lib-item" data-category="ui">
+                <div class="lib-panel">
+                    <div class="row box-shadow">
+                        <div class="col-md-6">
+                            <img class="lib-img" src="https://saodieu.vn/media/article/1648606091_Saodieu---10-mon-an-3.jpg">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="lib-row lib-header">
+                                Example library
+                                <div class="lib-header-seperator"></div>
+                            </div>
+                            <div class="lib-row lib-desc">
+                                Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 no-padding lib-item" data-category="ui">
+                <div class="lib-panel">
+                    <div class="row box-shadow">
+                        <div class="col-md-6">
+                            <img class="lib-img" src="https://media.vov.vn/sites/default/files/styles/large/public/2020-09/hhh.jpg">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="lib-row lib-header">
+                                Example library
+                                <div class="lib-header-seperator"></div>
+                            </div>
+                            <div class="lib-row lib-desc">
+                                Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </section>
+        </fieldset>
+        <hr />
+        <div class="form-group">
+            <div class="form-actions col-md-offset-3 col-md-9">
+
+                <a class="btn btn-default" href="/FoodOrder/Order">
+                    <span class="icon icon-action-back"></span>
+                    [Back]
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <span class="icon icon-action-save"></span>
+                    [Save changes]
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+body {
+    padding: 20px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.lib-panel {
+    padding: 20px;
+    margin-bottom: 20Px;
+}
+.lib-panel img {
+    width: 100%;
+    background-color: transparent;
+}
+
+.lib-panel .row,
+.lib-panel .col-md-6 {
+    padding: 0;
+    background-color: #FFFFFF;
+}
+
+
+.lib-panel .lib-row {
+    padding: 0 10px 0 10px;
+}
+
+.lib-panel .lib-row.lib-header {
+    background-color: #FFFFFF;
+    font-size: 20px;
+    padding: 10px 10px 0 10px;
+}
+
+.lib-panel .lib-row.lib-header .lib-header-seperator {
+    height: 2px;
+    width: 26px;
+    background-color: #d9d9d9;
+    margin: 7px 0 7px 0;
+}
+
+.lib-panel .lib-row.lib-desc {
+    position: relative;
+    height: 100%;
+    display: block;
+    font-size: 13px;
+}
+.lib-panel .lib-row.lib-desc a{
+    position: absolute;
+    width: 100%;
+    bottom: 10px;
+    left: 20px;
+}
+
+.row-margin-bottom {
+    margin-bottom: 20px;
+}
+
+.box-shadow {
+    -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.10);
+    box-shadow: 0 0 10px 0 rgba(0,0,0,.10);
+}
+
+.no-padding {
+    padding: 0;
+}
+</style>
+
+@section navigation {
+    <a asp-action="Index" asp-route-id="" icon-name="action-back" class="btn btn-default-outline">
+        @Localizer["Back"]
+    </a>
+}

@@ -1,0 +1,208 @@
+﻿@model DishIndexViewModel
+
+@{
+    ViewData["Title"] = Localizer["Customer"];
+}
+<h1>DataView Dish</h1>
+<button id="disable-btn">Disable Dish</button>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="flextable table-actions col-sm-12">
+
+            <div class="btn-toolbar-item">
+                <input type="search" class="form-control input-block " style="min-width: 300px;" id="filterText" placeholder="@Localizer["Search..."]">
+            </div>
+            <div class="btn-toolbar-item">
+                <button id="btn-search" class="btn btn-success-outline" title="@Localizer["Search"]">
+                    <span class="icon icon-search"></span>
+                </button>
+            </div>
+
+            <div class="btn-toolbar-item">
+                <button id="clearFilter" class="btn btn-primary-outline" title="@Localizer["Clear all"]">
+                    <span class="icon icon-erase"></span>
+                </button>
+            </div>
+        </div>
+        <div class="flextable-item">
+            <div class="checkbox custom-control custom-checkbox">
+                <label>
+                    <input id="filterDisabled" type="checkbox" class="form-control">
+                    <span class="custom-control-indicator"></span>
+                    @Localizer["Include Disabled"]
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .k-grid-content td {
+      position:relative;
+    }
+    img {
+        max-width: 100px;
+    }
+    
+  </style>
+   <div id="grid"></div>
+    <script>
+        require(["jquery",'kendo.grid.min', 'kendo.aspnetmvc.min'], function ($) {
+          dataSource = new kendo.data.DataSource({
+            transport: {
+              read:  {
+                url: '@Url.Action("Read")',
+                type: "POST",
+                dataType: "jsonp"
+              },
+              update: {
+               url: '@Url.Action("Edit")',
+               dataType: "jsonp"
+              },
+              destroy: {
+                url: '@Url.Action("Delete")',
+                dataType: "jsonp"
+              },
+              create: {
+                url: '@Url.Action("Create")',
+              },
+              
+              parameterMap: function(options, operation) {
+                   
+                    if (operation == "destroy") {
+                        // send the destroyed data items as the "models" service parameter encoded in JSON
+                        return { models: kendo.stringify(options.models) }
+                    }
+                   
+              }
+
+            },
+            batch: true,
+            pageSize: 20,
+            schema: {
+              model: {
+                id: "Id",
+                fields: {
+                  Id: { editable: false, nullable: true },
+                  Photo: { editable: false, nullable: true },
+                  Name: { validation: { required: true } },
+                  Description: { validation: { required: true } },
+                  CreatedDate:  { validation: { required: true } },
+                  CategoryName: { validation: { required: true } },
+                  Disable: { validation: { required: true } },
+                }
+              }
+            }
+          });
+       
+        
+       $("#grid").kendoGrid({
+        dataSource: dataSource,
+        pageable: true,
+        
+        height: 680,
+        columns: [
+            { selectable: true, width: "50px" },
+            {
+                field: "Photo", width: "150px", height:"150px", minResizableWidth: 300, title: "@Localizer["Photo"]",
+                template: '<img src="data:image/jpg;base64,#:Photo#" />',
+            },
+          "Name",
+          "Description",
+          "CreatedDate",
+          "CategoryName",
+                {
+                    field: "Disable", width: "150px", height: "150px", minResizableWidth: 300, title: "@Localizer["Disable"]",
+                    template: `<input type='checkbox' #=(Disable) ? 'checked = checked' : '' # disabled/>`,
+                },
+
+            { command: ["edit", "destroy"], title: "&nbsp;", width: "190px" }
+         ],
+         change: function (e) {
+                //var selectedRows = this.select();
+                //var selectedDataItems = [];
+                //for (var i = 0; i < selectedRows.length; i++) {
+                //    var dataItem = this.dataItem(selectedRows[i]);
+                //    selectedDataItems.push(dataItem);
+                //    }
+                //var selectedIds = selectedDataItems.map(e => e.Id);               
+         },
+         dataBound: function (e) {
+             
+         },
+          editable: "popup"}
+          );
+
+      $("#grid .k-grid-content").on("change", "input.chkbx", function(e) {
+          alert(123);
+        var grid = $("#grid").data("kendoGrid"),
+            dataItem = grid.dataItem($(e.target).closest("tr"));
+            
+        dataItem.set("Discontinued", this.checked);
+      });
+
+        $("#disable-btn").click((e) => {
+            //Get the id field values of the selected rows
+            var data = $("#grid").data("kendoGrid");
+            var selectedIds = data.selectedKeyNames();
+            
+            $.ajax({
+                url: "/foodorder/dish/changestate",
+                type: `post`,
+                data: {
+                    "selectedIds": selectedIds
+                },
+                success: (data) => {
+                    
+                }
+            })
+      });
+
+      function dirtyField(data, fieldName){
+        var hasClass = $("[data-uid=" + data.uid + "]").find(".k-dirty-cell").length < 1;
+        if(data.dirty && data.dirtyFields[fieldName] && hasClass){
+          return "<span class='k-dirty'></span>"
+        }
+        else{
+          return "";
+        }
+      }
+
+        var getData = function () {
+            console.log($("#filterDisabled").is(':checked'));
+            return {
+                filterText: $('#filterText').val(),
+                includeDisabled: $("#filterDisabled").is(':checked')
+            }
+        }
+
+        var refreshData = function () {
+            var grid = $("#grid").data("kendoGrid");
+            grid.dataSource.transport.options.read.data = getData;
+            $("#grid").data("kendoGrid").dataSource.read();
+            $("#grid").data("kendoGrid").refresh();
+        }
+        
+        $("#filterText").keypress(function (e) {
+            var keyCode = e.keyCode ? e.keyCode : e.which;
+            if (keyCode == 13 || keyCode == 10) {
+                refreshData();
+            }
+
+        });
+        $("#btn-search").click(function () {
+            refreshData();
+        });
+        $("#filterDisabled").change(refreshData);
+        $("#clearFilter").click(function () {
+            $('#filterKeyWord').val('');
+            refreshData();
+        });
+
+      })
+   </script>
+@section navigation {
+    <a>
+        @await Html.PartialAsync("_Create", new DishEditViewModel())
+    </a>
+}

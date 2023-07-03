@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Kendo.Mvc.UI
+@using System.Reflection
+@using System.Web
+
+@using HD
+@using HD.AspNetCore.Mvc
+@using HD.Station
+@using HD.Station.ComponentModel
+@using HD.Station.ComponentModel.DataAnnotations
+@using HD.Station.FoodOrder
+
+@using HD.Station.Security
+@using HD.Station.WebComponents
+@using HD.Station.WebComponents.Common
+@using HD.Station.WebComponents.TagHelpers
+
+@inject IViewLocalizer Localizer
+@inject ITheme Theme
+
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, HD.AspNetCore.Mvc
+@addTagHelper *, HD.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, HD.Station.WebComponents.Common

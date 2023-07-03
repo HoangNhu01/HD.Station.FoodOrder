@@ -1,0 +1,96 @@
+﻿@model MenuEditViewModel
+<div class="row">
+    <div class="col-md-7">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEdit">
+            <i class="fas fa-plus-square"></i> Edit
+        </button>
+    </div>    
+</div>
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="create-new">Edit Menu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+ <form name="Edit" asp-route-id="@ViewBag.Id" asp-action="Edit" id= "target">
+<div class="modal-body">
+       <div class="container">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input hidden name="id" />
+                 <div class="form-group">
+                    <div class="col-md-6">
+                        <label for="Day">@Localizer["Day"]:</label>
+                        @Html.TextBoxFor(m => m.Day, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="Day" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label for="Description">@Localizer["Description"]:</label>
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label for="UnitPrice">@Localizer["UnitPrice"]:</label>
+                        @Html.TextBoxFor(m => m.UnitPrice, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="UnitPrice" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <div class="col-md-6">
+                        <label for="CreatedUser">@Localizer["CreatedUser"]:</label>
+                        @Html.TextBoxFor(m => m.CreatedUser, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="CreatedUser" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                  <div class="form-group">
+                    <div class="col-md-6">
+                        <label for="CreatedDate">@Localizer["CreatedDate"]:</label>
+                        @Html.TextBoxFor(m => m.CreatedDate, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="CreatedDate" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label for="LastModifiedUser">@Localizer["LastModifiedUser"]:</label>
+                        @Html.TextBoxFor(m => m.LastModifiedUser, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="LastModifiedUser" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <div class="col-md-6">
+                        <label for="LastModifiedDate">@Localizer["LastModifiedDate"]:</label>
+                        @Html.TextBoxFor(m => m.LastModifiedDate, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="LastModifiedDate" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+        <hr/>
+</div>
+</div>
+ </form>
+        <div class="modal-footer" >
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id ="other">
+                    <span class="icon icon-action-save"></span>
+                    [Save changes]
+                </button>
+            </div>
+            <script>
+                require(["jquery",'kendo.grid.min', 'kendo.aspnetmvc.min'], function ($)
+                {
+                $("#other" ).click(function() {
+                $("#target" ).submit();
+
+                });
+                 });
+
+            </script>
+        </div>
+        </div>
+</div>

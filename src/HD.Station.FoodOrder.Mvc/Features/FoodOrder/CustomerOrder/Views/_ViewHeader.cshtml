@@ -1,0 +1,242 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Kendo.Mvc.UI
+@using System.Reflection
+@using System.Web
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link type="text/css"
+          media="all"
+          href="~/themes/index.css"
+          rel="stylesheet" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,300&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Reset font size and family */
+        html {
+            font-size: 100%;
+            font-family: sans-serif;
+        }
+
+        /* Reset heading styles */
+        h1, h2, h3, h4, h5, h6 {
+         /*   font-size: 100%;*/
+            font-weight: normal;
+        }
+
+        /* Reset list styles */
+        ul, ol {
+            list-style: none;
+        }
+        .time-h {
+            font-size: 38px;
+           font-family: 'Open Sans', sans-serif;
+            color: white;
+            /* margin-left: 25%;
+            margin-top: 2%; */
+            text-align: center;
+        }
+
+        .btn-user {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border-radius: 30%;
+            padding: 10px 20px;
+            font-size: 18px;
+        }
+
+
+
+        /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+        .row.content {
+            height: 100%;
+        }
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            background-color: #f1f1f1;
+        }
+
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #555;
+            color: white;
+            padding: 15px;
+        }
+
+        li.danhmuc-sp {
+            display: block;
+        }
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        /*img.image {
+            height: 238px;
+        }*/
+
+       /* div.carousel-inner {
+            height: 420px;
+        }*/
+
+        .disable {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+/*
+       
+        div.carousel.slide {
+            border-radius: 10px;
+            overflow: hidden;
+            height: 426px;
+        }*/
+
+        /*.food-card {
+            background: #fff;
+            border-radius: 30px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            -webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+            -webkit-transition: 0.1s;
+            transition: 0.1s;
+        }*/
+
+        div.coming-soon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            font-size: 30px;
+        }
+
+        a.left, a.right {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        /*.carousel-control {
+            top: 208px;
+        }*/
+
+        a span.glyphicon {
+            margin-left: -15px;
+            margin-top: -14px;
+        }
+        div.row.content {
+            min-width: 1440px;
+        }
+        div.row.list-dish {
+            margin: 5px;
+        }
+
+        #slide {
+            position: fixed;
+            top: 15%;
+            right: -25%;
+            width: 20%;           
+            background-color: #f0f0f0;
+            transition: all 0.5s ease-out;
+            border-radius: 5px;
+            overflow: hidden;
+            border-left: rgb(127, 247, 127) solid;
+            box-shadow: 10px 10px 5px #aaaaaa;
+        }
+
+            #slide.show {
+                right: 0;
+            }
+
+            #slide p {
+                margin: 20px;
+            }
+    </style>
+</head>
+<body>
+  
+        @*<header id="header" class="header">
+            <div class="header-wrapper " style="text-align: center;">
+                <div id="nendo" class="header-main">
+                    <div class="time-h">
+                        Date: <span id="datetime">3/12/2023, 1:03:49 AM</span>
+                        <script>
+                            var dt = new Date();
+                            document.getElementById("datetime").innerHTML = dt.toLocaleString();
+                        </script>
+                    </div>
+                    <div class="container">
+                    <a role="button" class="btn btn-user btn-default" href="~">
+                        <span class="glyphicon glyphicon-user aria-hidden="true"></span>
+                    </a>
+                    <a class="btn btn-default  btn-user" href="~/FoodOrder/CustomerOrder/MyCart" role="button">
+                        <span class="glyphicon glyphicon-shopping-cart aria-hidden="true"></span>
+                    </a>
+                    <a class="btn btn-default  btn-user" href="~/FoodOrder/CustomerOrder/Index" role="button">
+                        <span class="glyphicon glyphicon-home aria-hidden="true"></span>
+                    </a>
+
+                    </div>
+                   
+
+                </div>
+
+            </div>
+
+
+
+
+        </header>*@
+    <header id="header" class="header">
+        <div class="header-wrapper " style="text-align: center;">
+            <div id="nendo" class="header-main">
+                <div class="time-h">
+                    Date: <span id="datetime">3/12/2023, 1:03:49 AM</span>
+                    <script>
+                        var dt = new Date();
+                        document.getElementById("datetime").innerHTML = dt.toLocaleString();
+                    </script>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <a role="button" class="btn btn-user btn-default" href="~/Account/Manage" style="margin-right: 40px;">
+                        <span class="fa-solid fa-user span-icon"></span>
+                    </a>
+                    <a class="btn btn-default  btn-user" href="~/FoodOrder/CustomerOrder/MyCart" role="button" style="margin-right: 160px;">
+                        <span class="fa-solid fa-cart-shopping span-icon"></span>
+                    </a>
+                    <a class="btn btn-default  btn-user" href="~/FoodOrder/CustomerOrder/MenuIndex" role="button" style="margin-right: 93%;">
+                        <span class="fa-solid fa-house span-icon"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+        @RenderBody()
+
+
+
+   
+</body>
+<footer id="nendo" style="color:white; font-size: 150%;" class="container-fluid footer-a">
+ @*   <p style="margin-bottom:0px;">Eat good feel good ...</p>*@
+    <p style="margin-bottom:0px;font-family: 'Open Sans', sans-serif;">Eat good feel good ...</p>
+</footer>
+</html>

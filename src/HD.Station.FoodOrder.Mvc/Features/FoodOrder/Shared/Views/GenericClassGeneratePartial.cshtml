@@ -1,0 +1,123 @@
+﻿@{
+    var path = ViewData["path"] != null ? ViewData["path"] : "";
+    var name = ViewData["name"] != null ? ViewData["name"] : "";
+    var labelClass = ViewData["labelClass"] != null ? ViewData["labelClass"] : "col-md-3";
+    var fieldClass = ViewData["fieldClass"] != null ? ViewData["fieldClass"] : "col-md-8";
+    var groupClass = ViewData["groupClass"] != null ? ViewData["groupClass"] : "form-group";
+    List<PropertyInfo> properties = ViewData["properties"] != null ? (List<PropertyInfo>)ViewData["properties"]
+                                                                   : new List<PropertyInfo>();
+    List<PropertyInfo> partials = ViewData["partials"] != null ? (List<PropertyInfo>)ViewData["partials"]
+                                                               : new List<PropertyInfo>();
+}
+
+<fieldset name="@path" data-name="@name">
+    @{
+        var mode = ViewData["__mode"] != null ? (FormMode)ViewData["__mode"] : FormMode.Details;
+        if (mode == FormMode.Details)
+        {
+    <dl class="dl-horizontal">
+        @foreach (var member in properties)
+        {
+            string mname = member.Name;
+
+            if (member.IsHidden())
+            {
+                @Html.Hidden(mname);
+            }
+            else
+            {
+
+            <dt>
+                @Localizer[member.DisplayName()]:
+            </dt>
+            <dd>
+                @{
+                    var description = member.DisplayDescription();
+                    if (!string.IsNullOrWhiteSpace(description))
+                    {
+                        @*<p>
+                            @Localizer[description]
+                        </p>*@
+                    }
+                    var value = member.TryGetValue((object)Model);
+                    if (value != null && typeof(bool).IsAssignableFrom(value.GetType()))
+                    {
+                        value = ((bool)value) ? Localizer["Yes"] : Localizer["No"];
+                    }
+                }
+
+                @value
+
+            </dd>
+            }
+        }
+    </dl>
+        }
+        else
+        {
+            foreach (var member in properties)
+            {
+                string mname = member.Name;
+                //string selfFieldClass = FormHelper.FieldClass(member);
+                var tag = member.GetInputType();
+                if (member.IsHidden())
+                {
+                    @Html.Hidden(mname);
+                }
+                else
+                {
+                    <div class="@groupClass">
+                        <div class="@labelClass">
+                            <label class="control-label" m-for="@mname" m-parent="@path"></label>
+                        </div>
+                        <div class="@fieldClass">
+                            @{
+                                if (tag == FormInputType.Select)
+                                {
+                                    var value = member.GetOrCreateInstance((object)Model);
+                                    var promt = member.GetPrompt();
+                                    promt = promt ?? "Select one item";
+                                    <select data-value="@value" m-for="@mname" m-parent="@path" m-items="@FormHelper.GetSelectList(Model, member)" m-mode="@mode">
+                                        <option value="">@Localizer[promt]</option>
+                                    </select>
+                                }
+                                else if (tag == FormInputType.Multiselect)
+                                {
+                                    <select m-for="@mname" m-parent="@path" m-items="@FormHelper.GetSelectList(Model, member)" m-multiple="true" m-mode="@mode" >
+                                    </select>
+                                }
+                                else if (tag == FormInputType.Textarea)
+                                {
+                                    var value = member.TryGetValue((object)Model);
+                                    <textarea m-for="@mname" m-parent="@path" m-mode="@mode">@value</textarea>
+                                }
+                                else
+                                {
+                                    <input m-for="@mname" m-parent="@path" m-datalist="@FormHelper.GetInputDatalist(Model, member)" m-mode="@mode" />
+                                }
+                            }
+                            <span m-validation-for="@mname" m-parent="@path" class="text-danger"></span>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    }
+</fieldset>
+@{
+    foreach (var member in partials)
+    {
+        string mname = member.Name;
+
+        var model = member.GetOrCreateInstance((object)Model);
+        ViewDataDictionary vd = new ViewDataDictionary(ViewData);
+        vd["properties"] = model.GetType().DisplayProperties();
+        vd["partials"] = model.GetType().PartialDisplayProperties();
+        vd["path"] = path + "." + mname;
+        vd["name"] = member.DisplayName();
+        var htmlTagAttr = member.HtmlPartial();
+        var partialName = htmlTagAttr != null && htmlTagAttr.PartialName != null && htmlTagAttr.PartialName != "" ?
+            htmlTagAttr.PartialName : "ClassGeneratePartial";
+        @Html.Partial(partialName, model, vd);
+    }
+}

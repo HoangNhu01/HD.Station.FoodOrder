@@ -1,0 +1,74 @@
+﻿@model CustomerOrderEditViewModel
+<div class="row">
+    <div class="col-md-5 row-md-9">
+        <button type="button" class="btn btn-primary-outline" data-toggle="modal" data-target="#modalCreate" icon-name="action-create">
+            <i></i> Add CustomerOrder
+        </button>
+    </div>    
+    <div class="col-sm-5 text-right">
+        Ngày: <span id="datetime"> </span>
+        <script>
+            var dt = new Date();
+            document.getElementById("datetime").innerHTML = dt.toLocaleString();
+        </script>   
+    </div>
+</div>
+<div class="modal fade" id="modalCreate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="create-new">Thêm Menu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="target" name="Create" asp-action="Create">
+            <div class="modal-body">
+                <div class="container">
+                    
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                
+                                 <div class="form-group">
+                                       <label for="CustomerId">@Localizer["DishId"]:</label>
+                                    <select asp-for="DishId" asp-items="@Model.Dishs" class="form-control"></select>
+                                    <span class="field-validation-valid" data-valmsg-for="DishId" data-valmsg-replace="true"></span>
+                                </div>
+                                 <div class="form-group">
+                                    <label for="MenuId">@Localizer["MenuId"]:</label>
+                                    <select asp-for="MenuId" asp-items="@Model.Menus" class="form-control"></select>
+                                    <span class="field-validation-valid" data-valmsg-for="MenuId" data-valmsg-replace="true"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="DishCategoryId">@Localizer["DishCategoryId"]:</label>
+                                    <select asp-for="DishCategoryId" asp-items="@Model.DishCategorys" class="form-control"></select>
+                                    <span class="field-validation-valid" data-valmsg-for="DishCategoryId" data-valmsg-replace="true"></span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    
+                </div>
+            </div>
+            </form>
+            <div class="modal-footer" >
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id ="other">
+                    <span class="icon icon-action-save"></span>
+                    [Save changes]
+                </button>
+            </div>
+            <script>
+                require(["jquery",'kendo.grid.min', 'kendo.aspnetmvc.min'], function ($)
+                {
+                $("#other" ).click(function() {
+                $("#target" ).submit();
+
+                });
+                 });
+
+            </script>
+        </div>
+    </div>
+</div>

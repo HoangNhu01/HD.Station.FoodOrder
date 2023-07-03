@@ -1,0 +1,114 @@
+﻿@model MenuEditViewModel
+@{
+    ViewData["Title"] = Localizer["Menu"];
+    ViewData["SubTitle"] = Localizer["Create"];
+    var message = ViewBag.Notice as NoticeModel;
+    //var path = ViewData["path"] != null ? ViewData["path"] : "";
+    //var name = ViewData["name"] != null ? ViewData["name"] : "";
+    //var groupClass = ViewData["groupClass"] != null ? ViewData["groupClass"] : "form-group";
+    //var labelClass = ViewData["labelClass"] != null ? ViewData["labelClass"] : "col-md-3";
+    //var fieldClass = ViewData["fieldClass"] != null ? ViewData["fieldClass"] : "col-md-8";
+}
+
+<div class="hr-divider">
+    <h3 class="hr-divider-content hr-divider-heading">
+        @ViewData["Title"]
+    </h3>
+</div>
+<div notice-for="message"></div>
+<div class="content col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+    <form name="Create" asp-action="Create" class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">       
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="Day">@Localizer["Day"]:</label>
+                    </div>
+                    <div class="col-md-9" style="color:black">
+                        @Html.DropDownListFor(m => m.Day, new SelectList(Enum.GetValues(typeof(DayOfWeek))), "Select Day", new { @class = "form-control" })
+                        @*<span class="field-validation-valid" data-valmsg-for="Day" data-valmsg-replace="true"></span>*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="Description">@Localizer["Description"]:</label>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="CreatedUser">@Localizer["CreatedUser"]:</label>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(m => m.CreatedUser, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="CreatedUser" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="CreatedDate" class="control-label">@Localizer["Created Date"]:</label>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(m => m.CreatedDate, new { @type = "date", @class = "form-control" })
+                        <span class="field-validation-valid text-danger" data-valmsg-for="CreatedDate" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="LastModifiedUser">@Localizer["LastModifiedUser"]:</label>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(m => m.LastModifiedUser, new { @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="LastModifiedUser" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="LastModifiedDate">@Localizer["LastModifiedDate"]:</label>
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(m => m.LastModifiedDate, new {@type ="date", @class = "form-control" })
+                        <span class="field-validation-valid" data-valmsg-for="LastModifiedDate" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label>@Localizer["Dishes"]:</label>
+                    </div>
+                    <div class="col-md-9">
+                        <select asp-for="Dishes" asp-items="@ViewBag.Dishes" class="form-control" multiple>
+                        </select>
+                       @Html.DropDownListFor("Dishes", @ViewBag.Dishes, "Select", new { @class = "form-control" })
+                      
+                        <span class="field-validation-valid" data-valmsg-for="" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+               
+</div>
+        <hr />
+        <div class="form-group">
+            <div class="form-actions col-md-offset-3 col-md-9">
+
+                <a class="btn btn-default" href="/FoodOrder/Menu">
+                    <span class="icon icon-action-back"></span>
+                    [Back]
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <span class="icon icon-action-save"></span>
+                    [Save changes]
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section navigation {
+    <a asp-action="Index" asp-route-id="" icon-name="action-back" class="btn btn-default-outline">
+        @Localizer["Back"]
+    </a>
+}

@@ -1,0 +1,69 @@
+﻿@model List<MenuInfoViewModel>
+
+<div class="container">
+    
+@foreach (var name in Model)
+{
+    <div class="Title">DANH SÁCH MÓN ĂN @DateTime.Today.DayOfWeek @DateTime.Now.ToString("MM/dd/yyyy")-@name.UnitPrice VNĐ </div>
+        foreach (var des in name.DishDes)
+        {
+             var image = des.Dish.Photo;
+            var imageBase64 = $"data:image/jpg;base64,{Convert.ToBase64String(image)}";
+        
+          <div class="col-sm-5">
+          <div class="card">
+            <div class="image">
+              <img src="@imageBase64" />
+            </div>
+            <div class="card-inner">
+              <div class="header">
+                 <h2 class="card-text" style='color:black'> @des.Dish.Name</h2>
+            </div>
+            <div class="content">
+              <p style='color:black'>@des.Dish.Description</p>
+            </div>
+              </div>
+          </div>
+        </div>
+        
+        }
+    @section navigation {
+            <div >
+                <button type="submit" class="btn btn-primary" id ="other">
+                    <span class="icon icon-action-save"></span>
+                    Order
+                </button>
+            </div>
+    }
+    
+}
+</div>
+<style>
+        
+          .card {
+          box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+          transition: all 0.2s ease-in-out;
+          box-sizing: border-box;
+          margin-top:10px;
+          margin-bottom:10px;
+          background-color:#FFF;
+        }
+
+        .card:hover {
+          box-shadow: 0 5px 5px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        }
+        .card .card-inner {
+          padding:10px;
+        }
+        .card .header h2, h3 {
+          margin-bottom: 0px;
+          margin-top:0px;
+        }
+        .card .header {
+          margin-bottom:5px;
+        }
+        .card img{
+          max-width:200px;
+            height:fit-content;
+        }
+        </style>

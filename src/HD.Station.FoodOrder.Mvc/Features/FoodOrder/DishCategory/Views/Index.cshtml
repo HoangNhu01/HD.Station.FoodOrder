@@ -1,0 +1,78 @@
+﻿@model DishCategoryIndexViewModel
+
+@{
+    ViewData["Title"] = Localizer["DishCategory"];
+}
+<h1>DataView DishCategory</h1>
+<style>
+    .k-grid-content td {
+      position:relative;
+    }
+    img {
+        max-width: 100px;
+    }
+    
+  </style>
+   <div id="grid"></div>
+    <script>
+        require(["jquery",'kendo.grid.min', 'kendo.aspnetmvc.min'], function ($) {
+          dataSource = new kendo.data.DataSource({
+            transport: {
+              read:  { url: '@Url.Action("Read")', },
+              update: { url: '@Url.Action("Edit")',  },
+              destroy: { url: '@Url.Action("Delete")', },
+              create: { url: '@Url.Action("Create")',},
+              parameterMap: function(options, operation) {
+                if (operation !== "read" && options.models) {
+                  return {models: kendo.stringify(options.models)};
+                }
+              }
+            },
+            batch: true,
+            pageSize: 20,
+            schema: {
+              model: {
+                id: "Id",
+                fields: {
+                 Name: { validation: { required: true } },
+                  
+                }
+              }
+            }
+          });
+        
+       $("#grid").kendoGrid({
+        dataSource: dataSource,
+        pageable: true, 
+        height: 680,
+        columns: [
+            { selectable: true, width: "50px" },
+             "Name",
+         { command: ["edit", "destroy"], title: "&nbsp;", width: "190px" }],
+          editable: "popup"
+
+      });
+
+      $("#grid .k-grid-content").on("change", "input.chkbx", function(e) {
+        var grid = $("#grid").data("kendoGrid"),
+            dataItem = grid.dataItem($(e.target).closest("tr"));
+
+        dataItem.set("Discontinued", this.checked);
+      });
+
+      function dirtyField(data, fieldName){
+        var hasClass = $("[data-uid=" + data.uid + "]").find(".k-dirty-cell").length < 1;
+        if(data.dirty && data.dirtyFields[fieldName] && hasClass){
+          return "<span class='k-dirty'></span>"
+        }
+        else{
+          return "";
+        }
+      }
+      })
+   </script>
+@section navigation {
+    <a>
+        @await Html.PartialAsync("_Create", new DishCagetoryEditViewModel())
+    </a>
+}

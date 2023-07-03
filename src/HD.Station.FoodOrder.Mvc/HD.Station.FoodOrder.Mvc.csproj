@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HD.AspNetCore.Mvc.Core" Version="4.1.0-ci*" />
+    <PackageReference Include="HD.SqlLocalization" Version="4.1.0-ci20190502.1" />
+    <PackageReference Include="HD.Station.WebComponents.Common" Version="4.1.0-ci*" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HD.Station.FoodOrder.Abstractions\HD.Station.FoodOrder.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--<EmbeddedResource Include="wwwroot\**\*.*" />-->
+    <EmbeddedResource Include="Features\**\*.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Features\FoodOrder\CustomerOrder\Views\MenuIndex.cshtml" />
+    <None Remove="Features\FoodOrder\CustomerOrder\Views\MyCart.cshtml" />
+    <None Remove="Features\FoodOrder\CustomerOrder\Views\OrderDeTail.cshtml" />
+    <None Remove="Features\FoodOrder\Dish\Views\_Create.cshtml" />
+    <None Remove="Features\FoodOrder\Menu\Views\Order.cshtml" />
+    <None Remove="Features\FoodOrder\Menu\Views\Payment.cshtml" />
+    <None Remove="Features\FoodOrder\Menu\Views\_Create.cshtml" />
+    <None Remove="Features\FoodOrder\Order\Views\_Create.cshtml" />
+    <None Remove="Features\FoodOrder\RegularCustomer\Views\_Create.cshtml" />
+  </ItemGroup>
+
+</Project>

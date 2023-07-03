@@ -1,0 +1,205 @@
+﻿@model IEnumerable<DishCategoryViewModel>
+@{
+    Layout = "_ViewHeader" ;
+}
+
+        <div class="container-fluid">
+            <div class="row content">
+                <div class="col-sm-3 sidenav" id="leftmain">
+                    <div class=""></div>
+                    <h4>Danh mục sản phẩm</h4>
+                    <div class="kengang"></div>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li class="danhmuc-sp">
+                            <a asp-action="MenuIndex">
+                                <img src="~/image/icon.png" alt="Lights" style="width:11%">
+                                Đặt món theo ngày
+                            </a>
+                        </li>
+                        @{var sectionIndex = 1;}
+                        @foreach (var item in Model)
+                        {
+                            <li class="danhmuc-sp">
+                                <a href="#section@(sectionIndex)">
+                                    <img src="~/image/icon.png" alt="Lights" style="width:11%">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </a>
+                            </li>
+                            sectionIndex++;
+                        }
+
+                    </ul><br>
+                    <h4>Sản phẩm bán chạy</h4>
+                    <div class="kengang"></div>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li class="danhmuc-sp"><a href=""> Cơm rang dưa bò </a></li>
+                        <li class="danhmuc-sp"><a href=""> Bánh Bao </a></li>
+                        <li class="danhmuc-sp"><a href="">  Phở Gà </a></li>
+                       @* <li class="danhmuc-sp"><a href="#section3"><img src="" alt="Lights" style="width:35%">  Phở Bò </a></li>*@
+                    </ul><br>
+                </div>
+                <div class="col-sm-9" style="margin-bottom:80px">
+                    @{
+                         sectionIndex = 1;
+                    }
+
+                    @foreach (var item in Model)
+                    {
+                var categoryId = item.Id;
+                <h1>
+                    @Html.DisplayFor(modelItem => item.Name)
+
+                </h1>
+                <div id="section@(sectionIndex)" class="kengang2"></div>
+                sectionIndex++;
+                        <div class="row list-dish">
+                        <div id="" class="" >
+                                @{
+                                    int count = item.ListDish.Count() / 4;
+                                    int store = 0;
+                                    @if (item.ListDish.Count() % 4 != 0)
+                                    {
+                                        count += 1;
+                                    }
+       
+       
+                                        @if(count == 0)
+                                        {
+                                            <span>
+                                                Coming soon
+                                            </span>
+                                        }else
+                                        {
+                                            for (int i = 0; i < count; i++)
+                                            {
+
+                                                <div class="item @(i==0?"active":"")">
+                                                    @{
+                                                        var x = item.ListDish.Skip(i * 4).Take(4);
+                                                        <div class="row" id="wrap-@item.Name-@i">
+                                                            @{
+
+                                                                foreach (var index in x)
+                                                                {
+                                                        <div class="col-sm-6 col-md-3 col-lg-3 @((index.Disable || index.MealMenu == null) ? "disable":"")">
+                                                                        <div class="food-card">
+                                                                                <a asp-action="OrderDeTail" asp-route-id="@index.Id">
+
+                                                                                <div class="food-card_img">
+                                                                                    <img class="image" src="data:image/png;base64, @(index.PhotoBase64)" alt="">
+                                                                                    <a href="#!"><i class="far fa-heart"></i></a>
+                                                                                </div>
+                                                                                <div class="food-card_content">
+                                                                                    <div class="food-card_title-section">
+                                                                                        <a href="#!" class="food-card_title">@index.Name</a>
+                                                                                        <!-- <a href="#!" class="food-card_author">Burger</a> -->
+                                                                                    </div>
+                                                                                    <div class="food-card_bottom-section">
+                                                                                        <div class="space-between">
+                                                                                        </div>
+                                                                                        <hr>
+                                                                                        <div class="space-between">
+                                                                                            <div class="food-card_price">
+                                                                                                <span>
+                                                                                                    @(index.Price)&nbsp;<span>₫</span> &nbsp;
+                                                                                                    <span>@index.Properties</span>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                }
+                                                            }
+                                                        </div>
+
+                                                    }
+                                                </div>
+                                            }
+                                        }
+           
+                                    //</div>
+                                }
+   
+   
+                            </div>
+
+                        </div>
+
+                    }
+                </div>
+            </div>
+</div>
+
+    <div class="modal" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Giỏ hàng đang trống hoặc đã được thanh toán hết, vui lòng đặt món!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Ok!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        // hành động click vào mục sản phẩm thì nhảy xuống phàn đó
+        $(document).ready(function () {
+            
+
+     
+
+            var message = `@ViewBag.Message`;
+            console.log(message)
+            if(message != "") {
+                    $('#myModal').show();
+                    $('body').addClass('modal-open');
+                    $('button.btn').click(function() {
+                    $('#myModal').hide();
+                       
+                    });
+            }
+
+
+            $("a").on('click', function (event) {
+
+                // Make sure this.hash has a value before overriding default behavior
+                if (this.hash !== "") {
+                    // Prevent default anchor click behavior
+                    event.preventDefault();
+
+                    // Store hash
+                    var hash = this.hash;
+
+                    // Using jQuery's animate() method to add smooth page scroll
+                    // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 800, function () {
+
+                        // Add hash (#) to URL when done scrolling (default click behavior)
+                        window.location.hash = hash;
+                    });
+                } // End if
+            });
+        });
+    </script>
+    
+

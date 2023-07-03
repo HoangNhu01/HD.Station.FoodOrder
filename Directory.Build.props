@@ -1,0 +1,26 @@
+<Project>
+  <PropertyGroup>
+    <LibraryTargetFramework>netstandard2.0</LibraryTargetFramework>
+    <AppTargetFramework>netcoreapp2.1</AppTargetFramework>
+    <NetCoreVersion>2.1.3</NetCoreVersion>
+    <BuildType>Legacy</BuildType>
+    <BuildCompany>HD Ultrasoft LLC</BuildCompany>
+    <BuildProduct>HD Station</BuildProduct>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <EnableSourceLink>false</EnableSourceLink>
+    <Description>HD Station - HD Ultrasoft Contents Managment System.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(TF_BUILD) != ''">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <EnableSourceLink>true</EnableSourceLink>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(SolutionDir)/build/obj/$(MSBuildProjectName)</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="HD.Build" Version="4.1.0-*" PrivateAssets="All"/>
+  </ItemGroup>
+</Project>

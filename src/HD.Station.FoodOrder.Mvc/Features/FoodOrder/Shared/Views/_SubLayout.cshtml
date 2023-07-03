@@ -1,0 +1,102 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+@*<link rel="stylesheet" href="~/css/workflow/workflow.form-control.css" />*@
+
+<div class="col-md-3 col-lg-2 sidebar p-l-0 p-r-0" id="partleft">
+        <cacheoff vary-by-route="true">
+            <nav class="sidebar-nav m-r-md">
+                <div data-toggle="collapse" data-target="#sidebar-navigator" class="sidebar-header">
+                    <a class="sidebar-brand img-responsive" href="@Url.Action("Index","Dish")">
+                        <span class="icon icon-database sidebar-brand-icon"></span>
+                        @Localizer["Dish"]
+                    </a>
+                </div>
+
+                <div id="sidebar-navigator" class="collapse nav-toggleable-md">
+                    <div class="hr-divider ">
+                        <h3 class="hr-divider-content hr-divider-heading">
+                            @Localizer["List"]
+                        </h3>
+                    </div>
+                    <p>Test</p>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li class="nav-header"></li>
+                        <li asp-controller="Report">
+                            <a asp-controller="Report" asp-action="Index" asp-route-id="">
+                                <span class="icon"><i class="icofont-address-book"></i></span>
+                                @Localizer["Report"]
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li class="nav-header"></li>
+                        <li asp-controller="Dish">
+                            <a asp-controller="Dish" asp-action="Index" asp-route-id="">
+                                <span class="icon"><i class="icofont-address-book"></i></span>
+                                @Localizer["Dish"]
+                            </a>
+                        </li>
+                    </ul>
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="nav-header"></li>
+                    <li asp-controller="DishCategory">
+                        <a asp-controller="DishCategory" asp-action="Index" asp-route-id="">
+                            <span class="icon"><i class="icofont-address-book"></i></span>
+                            @Localizer["DishCategory"]
+                        </a>
+                    </li>
+                </ul>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li class="nav-header"></li>
+                        <li asp-controller="Menu">
+                            <a asp-controller="Menu" asp-action="Index" asp-route-id="">
+                                <span class="icon"><i class="icofont-address-book"></i></span>
+                                @Localizer["Menu"]
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li class="nav-header"></li>
+                        <li asp-controller="Order">
+                            <a asp-controller="Order" asp-action="Index" asp-route-id="">
+                                <span class="icon"><i class="icofont-address-book"></i></span>
+                                @Localizer["Order"]
+                            </a>
+                        </li>
+                    </ul>
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="nav-header"></li>
+                    <li asp-controller="CustomerOrder">
+                        <a asp-controller="CustomerOrder" asp-action="Index" asp-route-id="">
+                            <span class="icon"><i class="icofont-address-book"></i></span>
+                            @Localizer["CustomerOrder"]
+                        </a>
+                    </li>
+                </ul>
+
+               
+                    <hr class="visible-xs m-t">
+                </div>
+            </nav>
+        </cacheoff>
+    </div>
+
+    <div class="col-md-9 col-lg-10 content h-100 p-l-0 p-r-0">
+        <div class="dashhead">
+            <div class="dashhead-titles">
+                <h6 class="dashhead-subtitle">@ViewData["Title"]</h6>
+                <h2 class="dashhead-title">@ViewData["SubTitle"]</h2>
+            </div>
+            <div class="btn-toolbar dashhead-toolbar">
+                @RenderSection("navigation", required: false)
+            </div>
+        </div>
+
+        @RenderBody()
+    </div>
+
+@section Scripts {
+    @RenderSection("scripts", required: false)
+}
